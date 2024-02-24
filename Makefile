@@ -1,8 +1,20 @@
 # Compiler
 CXX := clang++
 
-# Compiler flags
-CXXFLAGS := -std=c++20 -Wall -Wextra -O2
+# Common compiler flags
+CXXFLAGS := -std=c++20 -Wall -Wextra
+
+# Default build type is Debug
+BUILD_TYPE ?= Release
+
+# Set flags based on build type
+ifeq ($(BUILD_TYPE),Release)
+    CXXFLAGS += -O2
+else ifeq ($(BUILD_TYPE),Debug)
+    CXXFLAGS += -g -O0
+else
+    $(error Unsupported build type: $(BUILD_TYPE))
+endif
 
 # Source files directory
 SRC_DIR := src
@@ -13,20 +25,20 @@ INC_DIR := include
 # Output directory
 BUILD_DIR := build
 
+# Executable name
+TARGET := $(BUILD_DIR)/main
+
 # Source files
 SRCS := $(wildcard $(SRC_DIR)/*.cpp)
 
 # Object files
 OBJS := $(SRCS:$(SRC_DIR)/%.cpp=$(BUILD_DIR)/%.o)
 
-# Executable name
-TARGET := $(BUILD_DIR)/main
-
 # Phony targets
 .PHONY: all clean
 
 # Default rebuild target
-all: clean $(TARGET)
+all: $(TARGET)
 
 # Rule to link object files into executable
 $(TARGET): $(OBJS)
@@ -43,3 +55,6 @@ $(BUILD_DIR):
 # Clean rule
 clean:
 	rm -rf $(BUILD_DIR) $(TARGET)
+
+run:
+	$(TARGET)

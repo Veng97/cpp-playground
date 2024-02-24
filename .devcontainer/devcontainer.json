@@ -4,24 +4,21 @@
   },
   "privileged": true,
   "runArgs": [
-      "--rm"
+    "--rm"
   ],
   "mounts": [
-      "source=${localWorkspaceFolder},target=/Workspace,type=bind,consistency=cached",
-      "source=cpp-playground-bash-history,target=/bash-history,type=volume"
+    "source=${localWorkspaceFolder},target=/Workspace,type=bind,consistency=cached",
+    "source=cpp-playground-bash-history,target=/bash-history,type=volume"
   ],
   "workspaceFolder": "/Workspace",
   "customizations": {
     "vscode": {
       "extensions": [
-        "rioj7.command-variable",
+        "natqe.reload",
+        "mhutchie.git-graph",
         "ms-vscode.cpptools",
         "ms-vscode.cpptools-themes",
-        "jeff-hykin.better-cpp-syntax",
-        "mhutchie.git-graph",
-        "natqe.reload",
-        "xaver.clang-format",
-        "ms-vscode.makefile-tools"
+        "jeff-hykin.better-cpp-syntax"
       ]
     }
   }
