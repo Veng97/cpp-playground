@@ -38,7 +38,7 @@ OBJS := $(SRCS:$(SRC_DIR)/%.cpp=$(BUILD_DIR)/%.o)
 .PHONY: all clean
 
 # Default rebuild target
-all: $(TARGET)
+all: clean $(TARGET)
 
 # Rule to link object files into executable
 $(TARGET): $(OBJS)
