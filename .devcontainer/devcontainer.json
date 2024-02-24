@@ -1,0 +1,28 @@
+{
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "privileged": true,
+  "runArgs": [
+      "--rm"
+  ],
+  "mounts": [
+      "source=${localWorkspaceFolder},target=/Workspace,type=bind,consistency=cached",
+      "source=cpp-playground-bash-history,target=/bash-history,type=volume"
+  ],
+  "workspaceFolder": "/Workspace",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "rioj7.command-variable",
+        "ms-vscode.cpptools",
+        "ms-vscode.cpptools-themes",
+        "jeff-hykin.better-cpp-syntax",
+        "mhutchie.git-graph",
+        "natqe.reload",
+        "xaver.clang-format",
+        "ms-vscode.makefile-tools"
+      ]
+    }
+  }
+}
