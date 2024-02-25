@@ -11,7 +11,8 @@ BUILD_TYPE ?= Release
 ifeq ($(BUILD_TYPE),Release)
     CXXFLAGS += -O2
 else ifeq ($(BUILD_TYPE),Debug)
-    CXXFLAGS += -g -O0
+# Note: -gdwarf-4 is used to generate DWARF version 4 debug information, this is a workaround for valgrind versions < 3.19
+    CXXFLAGS += -O0 -gdwarf-4
 else
     $(error Unsupported build type: $(BUILD_TYPE))
 endif

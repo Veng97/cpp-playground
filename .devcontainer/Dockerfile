@@ -10,6 +10,7 @@ RUN apt-get update && apt-get install -y \
     git \
     make \
     gdb \
+    valgrind \
     clang \
     clang-format \
     clang-tidy \

@@ -2,10 +2,11 @@
     "version": "0.2",
     "configurations": [
         {
-            "name": "Launch Debug",
-            "type": "cppdbg",
+            "name": "Launch Debugger",
             "request": "launch",
+            "type": "cppdbg",
             "program": "${workspaceFolder}/build/main",
+            "preLaunchTask": "Build (Debug)",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
@@ -25,7 +26,6 @@
                 "echo": false,
                 "focus": true,
             },
-            "preLaunchTask": "Build (Debug)"
         }
     ]
 }

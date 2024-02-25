@@ -30,13 +30,25 @@
         {
             "label": "Build and Run",
             "type": "shell",
-            "command": "make run",
+            "command": "${workspaceFolder}/build/main",
             "group": {
                 "kind": "build",
                 "isDefault": true
             },
             "dependsOn": [
                 "Build (Release)"
+            ]
+        },
+        {
+            "label": "Build and Run with Valgrind",
+            "type": "shell",
+            "command": "valgrind --leak-check=full --show-reachable=yes --track-origins=yes ${workspaceFolder}/build/main",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "dependsOn": [
+                "Build (Debug)"
             ]
         }
     ]
