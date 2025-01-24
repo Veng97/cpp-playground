@@ -36,10 +36,10 @@ SRCS := $(wildcard $(SRC_DIR)/*.cpp)
 OBJS := $(SRCS:$(SRC_DIR)/%.cpp=$(BUILD_DIR)/%.o)
 
 # Phony targets
-.PHONY: all clean
+.PHONY: all clean info
 
 # Default rebuild target
-all: clean $(TARGET)
+all: clean $(TARGET) info
 
 # Rule to link object files into executable
 $(TARGET): $(OBJS)
@@ -56,6 +56,11 @@ $(BUILD_DIR):
 # Clean rule
 clean:
 	rm -rf $(BUILD_DIR) $(TARGET)
+
+# Display information about the executable
+info: $(TARGET)
+	@echo "Size of executable:"
+	@size $(TARGET)
 
 run:
 	$(TARGET)

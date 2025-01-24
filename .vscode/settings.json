@@ -1,14 +1,14 @@
 {
-    "editor.formatOnSave": true,
+    // --------------- Code scanning ---------------
+    "C_Cpp.intelliSenseEngine": "disabled", // Disable the default IntelliSense engine, as it is not needed when using clangd
     "C_Cpp.default.compilerPath": "/usr/bin/clang++",
-    "C_Cpp.default.includePath": [
-        "${workspaceFolder}/**"
+    "clangd.path": "/usr/bin/clangd",
+    "clangd.arguments": [
+        "-log=verbose",
+        "--clang-tidy",
+        "-j=4" // Limits the number of threads clangd uses while building the index
     ],
-    "C_Cpp.default.defines": [],
-    "C_Cpp.default.cStandard": "c17",
-    "C_Cpp.default.cppStandard": "c++20",
-    "C_Cpp.default.intelliSenseMode": "linux-clang-x64",
-    "C_Cpp.codeAnalysis.clangTidy.enabled": true,
-    "C_Cpp.codeAnalysis.clangTidy.path": "/usr/bin/clang-tidy",
-    "C_Cpp.codeAnalysis.runAutomatically": true,
+    // --------------- Code formatting ---------------
+    "editor.formatOnSave": true,
+    "C_Cpp.clang_format_path": "/usr/bin/clang-format",
 }
