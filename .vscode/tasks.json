@@ -2,7 +2,6 @@
   "version": "2.0.0",
   "tasks": [
     {
-      // Creates build directory with default configuration
       "label": "CMake Configure (Release)",
       "type": "shell",
       "command": "cmake",
@@ -10,12 +9,11 @@
         "-S",
         ".",
         "-B",
-        "build/release",
+        "build",
         "-DCMAKE_BUILD_TYPE=Release"
       ]
     },
     {
-      // Creates build directory with default configuration
       "label": "CMake Configure (Debug)",
       "type": "shell",
       "command": "cmake",
@@ -23,12 +21,12 @@
         "-S",
         ".",
         "-B",
-        "build/debug",
+        "build",
         "-DCMAKE_BUILD_TYPE=Debug"
       ]
     },
     {
-      "label": "CMake: Build Active Target (Release)",
+      "label": "Build Target (Release)",
       "type": "shell",
       "dependsOn": [
         "CMake Configure (Release)"
@@ -36,9 +34,9 @@
       "command": "cmake",
       "args": [
         "--build",
-        "${workspaceFolder}/build/release",
+        "${workspaceFolder}/build",
         "--target",
-        "${input:activeTarget}"
+        "${input:pickTarget}"
       ],
       "group": {
         "kind": "build",
@@ -46,7 +44,7 @@
       }
     },
     {
-      "label": "CMake: Build Active Target (Debug)",
+      "label": "Build Target (Debug)",
       "type": "shell",
       "dependsOn": [
         "CMake Configure (Debug)"
@@ -54,9 +52,9 @@
       "command": "cmake",
       "args": [
         "--build",
-        "${workspaceFolder}/build/debug",
+        "${workspaceFolder}/build",
         "--target",
-        "${input:activeTarget}",
+        "${input:pickTarget}"
       ],
       "group": {
         "kind": "build",
@@ -64,39 +62,39 @@
       }
     },
     {
-      "label": "Run Active Target (Release)",
+      "label": "Run Target (Release)",
       "type": "shell",
-      "command": "${workspaceFolder}/build/release/${input:activeTarget}",
+      "command": "${workspaceFolder}/build/${input:pickTarget}",
       "group": {
         "kind": "build",
         "isDefault": true
       },
       "dependsOn": [
-        "CMake: Build Active Target (Release)"
+        "CMake: Build Target (Release)"
       ]
     },
     {
-      "label": "Run Active Target (Debug)",
+      "label": "Run Target (Debug)",
       "type": "shell",
-      "command": "${workspaceFolder}/build/debug/${input:activeTarget}",
+      "command": "${workspaceFolder}/build/${input:pickTarget}",
       "group": {
         "kind": "build",
         "isDefault": true
       },
       "dependsOn": [
-        "CMake: Build Active Target (Debug)"
+        "CMake: Build Target (Debug)"
       ]
     },
     {
       "label": "Run with Valgrind (Debug)",
       "type": "shell",
-      "command": "valgrind --leak-check=full --show-reachable=yes --track-origins=yes ${workspaceFolder}/build/debug/${input:activeTarget}",
+      "command": "valgrind --leak-check=full --show-reachable=yes --track-origins=yes ${workspaceFolder}/build/${input:pickTarget}",
       "group": {
         "kind": "build",
         "isDefault": true
       },
       "dependsOn": [
-        "CMake: Build Active Target (Debug)"
+        "CMake: Build Target (Debug)"
       ]
     },
     {
@@ -107,11 +105,11 @@
         "kind": "build",
         "isDefault": true
       }
-    }
+    },
   ],
   "inputs": [
     {
-      "id": "activeTarget",
+      "id": "pickTarget",
       "type": "pickString",
       "description": "Select the target to build or run",
       "options": [
