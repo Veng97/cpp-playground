@@ -44,7 +44,7 @@ public:
   }
 
 private:
-  std::string m_name; ///< Name of the key.
+  const std::string m_name; ///< Name of the key.
 };
 
 /**
@@ -57,22 +57,22 @@ concept HasJsonize = requires(T obj) {
 
 /**
  * @brief Converts a vector of key-value pairs to a JSON-formatted string.
- * @param values A vector of shared pointers to KeyValuePair objects.
+ * @param key_value_pairs A vector of shared pointers to KeyValuePair objects.
  * @return A JSON-formatted string representation of the key-value pairs.
  */
-std::string valuesToJson(const std::vector<std::shared_ptr<Plotter::KeyValuePair>>& values)
+std::string valuesToJson(const std::vector<std::shared_ptr<Plotter::KeyValuePair>>& key_value_pairs)
 {
   std::ostringstream oss;
   oss << "{";
   bool first = true;
-  for (const auto& value : values)
+  for (const auto& key_value_pair : key_value_pairs)
   {
     if (!first)
     {
       oss << ",";
     }
     first = false;
-    oss << "\"" << value->getName() << "\":" << value->getValue();
+    oss << "\"" << key_value_pair->getName() << "\":" << key_value_pair->getValue();
   }
 
   oss << "}";
