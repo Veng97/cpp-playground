@@ -1,18 +1,38 @@
-#include "plotter/plotter.hpp"
+#include "plotter/publisher.hpp"
 
 #include <chrono>
 #include <cmath>
+#include <iostream>
+#include <memory>
 #include <thread>
+#include <vector>
 
-int main() {
-  Plotter plotter("0.0.0.0", 9870);
+// Example struct with nested structs
+struct S
+{
+	int x;
+	double y;
 
-  // Simulate sending data periodically
-  for (int i = 0; i < 1000; ++i) {
-    double value = std::sin(i * 0.1); // Example data
-    plotter.sendData("sin_wave", value);
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
-  }
+	std::vector<std::shared_ptr<Plotter::KeyValuePair>> jsonize() const
+	{
+		return {std::make_shared<Plotter::Integer>("x", x), std::make_shared<Plotter::Float>("y", y)};
+	};
+};
 
-  return 0;
+int main()
+{
+	S outer = {10, 3.123456789123456789};
+
+	Plotter::Publisher pub("0.0.0.0", 9870);
+
+	std::cout << Plotter::Publisher::structToJson(outer) << std::endl;
+
+	// Simulate sending data periodically
+	for (int i = 0; i < 1000; ++i)
+	{
+		// double value = std::sin(i * 0.1); // Example data
+		// plotter.sendData("sin_wave", value);
+		pub.publishStruct(outer);
+		std::this_thread::sleep_for(std::chrono::milliseconds(100));
+	}
 }

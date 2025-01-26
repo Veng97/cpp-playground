@@ -4,13 +4,9 @@ BasedOnStyle: Microsoft
 IndentWidth: 2
 TabWidth: 2
 UseTab: Always
-ColumnLimit: 0
+ColumnLimit: 500
 IncludeBlocks: Preserve
 BreakBeforeBraces: Custom
 DerivePointerAlignment: false
 PointerAlignment: Left
 ReflowComments: true
----
-Language: Proto
-BasedOnStyle: Google
-...
