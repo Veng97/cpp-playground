@@ -3,7 +3,7 @@ Language: Cpp
 BasedOnStyle: Microsoft
 IndentWidth: 2
 TabWidth: 2
-UseTab: Always
+UseTab: Never
 ColumnLimit: 500
 IncludeBlocks: Preserve
 BreakBeforeBraces: Custom
