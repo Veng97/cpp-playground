@@ -4,7 +4,8 @@
   },
   "privileged": true,
   "runArgs": [
-    "--rm"
+    "--rm",
+    "--network=host"
   ],
   "mounts": [
     "source=${localWorkspaceFolder},target=/Workspace,type=bind,consistency=cached",

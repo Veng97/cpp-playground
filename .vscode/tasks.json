@@ -70,7 +70,7 @@
         "isDefault": true
       },
       "dependsOn": [
-        "CMake: Build Target (Release)"
+        "Build Target (Release)"
       ]
     },
     {
@@ -82,7 +82,7 @@
         "isDefault": true
       },
       "dependsOn": [
-        "CMake: Build Target (Debug)"
+        "Build Target (Debug)"
       ]
     },
     {
@@ -94,7 +94,7 @@
         "isDefault": true
       },
       "dependsOn": [
-        "CMake: Build Target (Debug)"
+        "Build Target (Debug)"
       ]
     },
     {
