@@ -85,6 +85,34 @@ public:
     }
   }
 
+  /**
+   * @brief Publishes data to the server with a timestamp. See `publish()` for more details.
+   *
+   * @tparam T The type of the data to be published.
+   * @param data The data to publish.
+   * @param timestamp The timestamp to include in the JSON string.
+   *
+   * @throw std::runtime_error If the sending process fails.
+   */
+  template <typename T> void publishWithTimestamp(const T& data, const double& timestamp)
+  {
+    if constexpr (std::is_same_v<T, std::vector<std::shared_ptr<Plotter::KeyValuePair>>>)
+    {
+      // If the type is a vector of KeyValuePair, convert to JSON and send.
+      send(valuesToJson(data, timestamp));
+    }
+    else
+    {
+      // If the type has a jsonize method, use it to convert to JSON and send.
+      send(structToJson(data, timestamp));
+    }
+  }
+
+  /**
+   * @brief Sends the specified data to the server.
+   * @param data The data to send.
+   * @throws std::runtime_error If the sending process fails.
+   */
   void send(const std::string& data)
   {
     int sent_bytes = sendto(m_sockfd, data.c_str(), data.size(), 0, reinterpret_cast<struct sockaddr*>(&m_server_addr), sizeof(m_server_addr));

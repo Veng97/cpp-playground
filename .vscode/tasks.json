@@ -113,9 +113,9 @@
       "type": "pickString",
       "description": "Select the target to build or run",
       "options": [
-        "DemoTarget"
+        "ExampleTarget"
       ],
-      "default": "DemoTarget"
+      "default": "ExampleTarget"
     }
   ]
 }

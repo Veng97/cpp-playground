@@ -1,6 +1,7 @@
 #pragma once
 
 #include <concepts>
+#include <limits>
 #include <memory>
 #include <sstream>
 #include <string>
@@ -80,6 +81,31 @@ std::string valuesToJson(const std::vector<std::shared_ptr<Plotter::KeyValuePair
 }
 
 /**
+ * @brief Converts a vector of key-value pairs to a JSON-formatted string with a timestamp.
+ * @param key_value_pairs A vector of shared pointers to KeyValuePair objects.
+ * @param timestamp The timestamp to include in the JSON string.
+ * @return A JSON-formatted string representation of the key-value pairs with the timestamp.
+ */
+std::string valuesToJson(const std::vector<std::shared_ptr<Plotter::KeyValuePair>>& key_value_pairs, const double& timestamp)
+{
+  std::ostringstream oss;
+  oss << R"({"timestamp":)" << timestamp << ",";
+  bool first = true;
+  for (const auto& key_value_pair : key_value_pairs)
+  {
+    if (!first)
+    {
+      oss << ",";
+    }
+    first = false;
+    oss << "\"" << key_value_pair->getName() << "\":" << key_value_pair->getValue();
+  }
+
+  oss << "}";
+  return oss.str();
+}
+
+/**
  * @brief Converts an object with a `jsonize` method to a JSON-formatted string.
  * @tparam T A type that has a `jsonize` method returning a vector of shared pointers to KeyValuePair objects.
  * @param obj The object to convert.
@@ -92,6 +118,49 @@ std::string structToJson(const T& obj)
   const auto& members = obj.jsonize();
   return valuesToJson(obj.jsonize());
 }
+
+/**
+ * @brief Converts an object with a `jsonize` method to a JSON-formatted string with a timestamp.
+ * @tparam T A type that has a `jsonize` method returning a vector of shared pointers to KeyValuePair objects.
+ * @param obj The object to convert.
+ * @param timestamp The timestamp to include in the JSON string.
+ * @return A JSON-formatted string representation of the object with the timestamp.
+ */
+template <typename T>
+  requires HasJsonize<T>
+std::string structToJson(const T& obj, const double& timestamp)
+{
+  const auto& members = obj.jsonize();
+  return valuesToJson(obj.jsonize(), timestamp);
+}
+
+/**
+ * @brief Represents a key-value pair with a boolean value.
+ */
+class Boolean : public KeyValuePair
+{
+public:
+  /**
+   * @brief Constructs a Bool key-value pair.
+   * @param name The name of the key.
+   * @param value The boolean value.
+   */
+  Boolean(std::string name, bool value) : KeyValuePair(std::move(name)), m_value(value)
+  {
+  }
+
+  /**
+   * @brief Gets the value of the key-value pair as a string.
+   * @return "true" or "false" based on the boolean value.
+   */
+  std::string getValue() const override
+  {
+    return m_value ? "true" : "false";
+  }
+
+private:
+  bool m_value; ///< Boolean value.
+};
 
 /**
  * @brief Represents a key-value pair with an integer value.
@@ -132,91 +201,38 @@ public:
    * @param name The name of the key.
    * @param value The float value.
    */
-  Float(std::string name, float value) : KeyValuePair(std::move(name)), m_value(value)
+  Float(std::string name, double value) : KeyValuePair(std::move(name)), m_value(value)
   {
   }
 
   /**
    * @brief Gets the value of the key-value pair as a string.
-   * @return The float value as a string.
+   * @return The double value as a string.
    */
   std::string getValue() const override
   {
-    return std::to_string(m_value);
+    std::ostringstream oss;
+    oss.precision(std::numeric_limits<double>::max_digits10);
+    oss << std::fixed << m_value;
+    return oss.str();
   }
 
 private:
-  float m_value; ///< Float value.
-};
-
-/**
- * @brief Represents a key-value pair with a string value.
- */
-class String : public KeyValuePair
-{
-public:
-  /**
-   * @brief Constructs a String key-value pair.
-   * @param name The name of the key.
-   * @param value The string value.
-   */
-  String(std::string name, std::string value) : KeyValuePair(std::move(name)), m_value(std::move(value))
-  {
-  }
-
-  /**
-   * @brief Gets the value of the key-value pair as a string.
-   * @return The string value enclosed in quotes.
-   */
-  std::string getValue() const override
-  {
-    return "\"" + m_value + "\"";
-  }
-
-private:
-  std::string m_value; ///< String value.
-};
-
-/**
- * @brief Represents a key-value pair with a boolean value.
- */
-class Bool : public KeyValuePair
-{
-public:
-  /**
-   * @brief Constructs a Bool key-value pair.
-   * @param name The name of the key.
-   * @param value The boolean value.
-   */
-  Bool(std::string name, bool value) : KeyValuePair(std::move(name)), m_value(value)
-  {
-  }
-
-  /**
-   * @brief Gets the value of the key-value pair as a string.
-   * @return "true" or "false" based on the boolean value.
-   */
-  std::string getValue() const override
-  {
-    return m_value ? "true" : "false";
-  }
-
-private:
-  bool m_value; ///< Boolean value.
+  double m_value; ///< Float value.
 };
 
 /**
  * @brief Represents a key-value pair with nested fields.
  */
-class NestedFields : public KeyValuePair
+class Dict : public KeyValuePair
 {
 public:
   /**
-   * @brief Constructs a NestedFields key-value pair.
+   * @brief Constructs a Dict key-value pair.
    * @param name The name of the key.
    * @param values A vector of nested key-value pairs.
    */
-  NestedFields(std::string name, std::vector<std::shared_ptr<KeyValuePair>> values) : KeyValuePair(std::move(name)), m_values(std::move(values))
+  Dict(std::string name, std::vector<std::shared_ptr<KeyValuePair>> values) : KeyValuePair(std::move(name)), m_values(std::move(values))
   {
   }
 

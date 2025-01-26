@@ -11,5 +11,5 @@ set(CMAKE_CXX_FLAGS_DEBUG "-O0 -gdwarf-4 -fno-omit-frame-pointer -fno-inline")
 
 include_directories(include)
 
-add_executable(DemoTarget src/main.cpp)
-target_include_directories(DemoTarget PRIVATE include)
+add_executable(ExampleTarget src/example.cpp)
+target_include_directories(ExampleTarget PRIVATE include)
