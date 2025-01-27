@@ -53,7 +53,9 @@ private:
  */
 template <typename T>
 concept HasJsonize = requires(T obj) {
-  { obj.jsonize() } -> std::same_as<std::vector<std::shared_ptr<KeyValuePair>>>;
+  { obj.jsonize() } -> std::same_as<std::vector<std::shared_ptr<KeyValuePair>>>; // Checks if jsonize returns a vector
+} || requires(T obj) {
+  { obj.jsonize() } -> std::same_as<std::shared_ptr<KeyValuePair>>; // Checks if jsonize returns a shared_ptr
 };
 
 /**
@@ -61,7 +63,7 @@ concept HasJsonize = requires(T obj) {
  * @param key_value_pairs A vector of shared pointers to KeyValuePair objects.
  * @return A JSON-formatted string representation of the key-value pairs.
  */
-std::string valuesToJson(const std::vector<std::shared_ptr<Plotter::KeyValuePair>>& key_value_pairs)
+inline std::string valuesToJson(const std::vector<std::shared_ptr<Plotter::KeyValuePair>>& key_value_pairs)
 {
   std::ostringstream oss;
   oss << "{";
@@ -86,7 +88,7 @@ std::string valuesToJson(const std::vector<std::shared_ptr<Plotter::KeyValuePair
  * @param timestamp The timestamp to include in the JSON string.
  * @return A JSON-formatted string representation of the key-value pairs with the timestamp.
  */
-std::string valuesToJson(const std::vector<std::shared_ptr<Plotter::KeyValuePair>>& key_value_pairs, const double& timestamp)
+inline std::string valuesToJson(const std::vector<std::shared_ptr<Plotter::KeyValuePair>>& key_value_pairs, const double& timestamp)
 {
   std::ostringstream oss;
   oss << R"({"timestamp":)" << timestamp << ",";
@@ -113,10 +115,17 @@ std::string valuesToJson(const std::vector<std::shared_ptr<Plotter::KeyValuePair
  */
 template <typename T>
   requires HasJsonize<T>
-std::string structToJson(const T& obj)
+inline std::string structToJson(const T& obj)
 {
   const auto& members = obj.jsonize();
-  return valuesToJson(obj.jsonize());
+  if constexpr (std::is_same_v<std::vector<std::shared_ptr<KeyValuePair>>, decltype(members)>)
+  {
+    return valuesToJson(obj.jsonize());
+  }
+  else
+  {
+    return valuesToJson(std::vector<std::shared_ptr<KeyValuePair>>{obj.jsonize()});
+  }
 }
 
 /**
@@ -128,10 +137,17 @@ std::string structToJson(const T& obj)
  */
 template <typename T>
   requires HasJsonize<T>
-std::string structToJson(const T& obj, const double& timestamp)
+inline std::string structToJson(const T& obj, const double& timestamp)
 {
   const auto& members = obj.jsonize();
-  return valuesToJson(obj.jsonize(), timestamp);
+  if constexpr (std::is_same_v<std::vector<std::shared_ptr<KeyValuePair>>, decltype(members)>)
+  {
+    return valuesToJson(obj.jsonize(), timestamp);
+  }
+  else
+  {
+    return valuesToJson(std::vector<std::shared_ptr<KeyValuePair>>{obj.jsonize()}, timestamp);
+  }
 }
 
 /**

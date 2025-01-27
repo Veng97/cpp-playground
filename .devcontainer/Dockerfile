@@ -28,9 +28,16 @@ RUN wget https://apt.llvm.org/llvm.sh \
     && ln -sf /usr/bin/clang-tidy-${LLVM_VERSION} /usr/bin/clang-tidy \
     && ln -sf /usr/bin/clang-format-${LLVM_VERSION} /usr/bin/clang-format \
     && ln -sf /usr/bin/clangd-${LLVM_VERSION} /usr/bin/clangd \
-    && apt-get autoremove -y \
-    && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
+# Install GoogleTest
+RUN apt-get update && apt-get install -y \
+    googletest \
+    && rm -rf /var/lib/apt/lists/* \
+    && cd /usr/src/googletest \
+    && cmake . \
+    && make \
+    && make install
 
 # Avoid git warnings with unsafe directories
 RUN git config --global --add safe.directory '*'
