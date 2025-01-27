@@ -150,6 +150,8 @@ inline std::string structToJson(const T& obj, const double& timestamp)
   }
 }
 
+namespace Types
+{
 /**
  * @brief Represents a key-value pair with a boolean value.
  */
@@ -265,4 +267,5 @@ private:
   std::vector<std::shared_ptr<KeyValuePair>> m_values; ///< Nested key-value pairs.
 };
 
+} // namespace Types
 } // namespace Plotter

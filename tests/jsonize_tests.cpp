@@ -11,9 +11,9 @@
 TEST(JsonizeTests, ValuesToJson)
 {
   std::vector<std::shared_ptr<Plotter::KeyValuePair>> values = {
-      std::make_shared<Plotter::Boolean>("boolean", true),
-      std::make_shared<Plotter::Integer>("integer", 42),
-      std::make_shared<Plotter::Float>("float", 0.123456789),
+      std::make_shared<Plotter::Types::Boolean>("boolean", true),
+      std::make_shared<Plotter::Types::Integer>("integer", 42),
+      std::make_shared<Plotter::Types::Float>("float", 0.123456789),
   };
 
   std::string json = Plotter::valuesToJson(values);
@@ -37,18 +37,17 @@ TEST(JsonizeTests, JsonizeVectorFromStruct)
 
     std::vector<std::shared_ptr<Plotter::KeyValuePair>> jsonize() const
     {
-      auto vec3 = std::make_shared<Plotter::Dict>("vec3", std::vector<std::shared_ptr<Plotter::KeyValuePair>>{
-                                                              std::make_shared<Plotter::Integer>("x", x),
-                                                              std::make_shared<Plotter::Integer>("y", y),
-                                                              std::make_shared<Plotter::Integer>("z", z),
-                                                          });
-      return {vec3};
+      return std::vector<std::shared_ptr<Plotter::KeyValuePair>>{
+          std::make_shared<Plotter::Types::Integer>("x", x),
+          std::make_shared<Plotter::Types::Integer>("y", y),
+          std::make_shared<Plotter::Types::Integer>("z", z),
+      };
     }
   };
 
   Vec3 vec3{1, 2, 3};
 
-  EXPECT_EQ(Plotter::structToJson(vec3), R"({"vec3":{"x":1,"y":2,"z":3}})");
+  EXPECT_EQ(Plotter::structToJson(vec3), R"({"x":1,"y":2,"z":3})");
 }
 
 /**
@@ -64,11 +63,11 @@ TEST(JsonizeTests, JsonizeScalarFromStruct)
 
     std::shared_ptr<Plotter::KeyValuePair> jsonize() const
     {
-      return std::make_shared<Plotter::Dict>("vec3", std::vector<std::shared_ptr<Plotter::KeyValuePair>>{
-                                                         std::make_shared<Plotter::Integer>("x", x),
-                                                         std::make_shared<Plotter::Integer>("y", y),
-                                                         std::make_shared<Plotter::Integer>("z", z),
-                                                     });
+      return std::make_shared<Plotter::Types::Dict>("vec3", std::vector<std::shared_ptr<Plotter::KeyValuePair>>{
+                                                                std::make_shared<Plotter::Types::Integer>("x", x),
+                                                                std::make_shared<Plotter::Types::Integer>("y", y),
+                                                                std::make_shared<Plotter::Types::Integer>("z", z),
+                                                            });
     }
   };
 
@@ -90,11 +89,11 @@ TEST(JsonizeTests, JsonizeWithTimestamp)
 
     std::shared_ptr<Plotter::KeyValuePair> jsonize() const
     {
-      return std::make_shared<Plotter::Dict>("vec3", std::vector<std::shared_ptr<Plotter::KeyValuePair>>{
-                                                         std::make_shared<Plotter::Integer>("x", x),
-                                                         std::make_shared<Plotter::Integer>("y", y),
-                                                         std::make_shared<Plotter::Integer>("z", z),
-                                                     });
+      return std::make_shared<Plotter::Types::Dict>("vec3", std::vector<std::shared_ptr<Plotter::KeyValuePair>>{
+                                                                std::make_shared<Plotter::Types::Integer>("x", x),
+                                                                std::make_shared<Plotter::Types::Integer>("y", y),
+                                                                std::make_shared<Plotter::Types::Integer>("z", z),
+                                                            });
     }
   };
 

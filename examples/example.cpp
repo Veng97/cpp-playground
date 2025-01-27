@@ -1,4 +1,5 @@
 #include "plotter/publisher.hpp"
+#include "plotter/types.hpp"
 
 #include <chrono>
 #include <cmath>
@@ -20,7 +21,7 @@ struct Example
 
     std::vector<std::shared_ptr<Plotter::KeyValuePair>> jsonize() const
     {
-      return {std::make_shared<Plotter::Integer>("axis", axis), std::make_shared<Plotter::Float>("value", value)};
+      return {std::make_shared<Plotter::Types::Integer>("axis", axis), std::make_shared<Plotter::Types::Float>("value", value)};
     };
   };
 
@@ -31,10 +32,10 @@ struct Example
   std::vector<std::shared_ptr<Plotter::KeyValuePair>> jsonize() const
   {
     return {
-        std::make_shared<Plotter::Boolean>("enabled", enabled),
-        std::make_shared<Plotter::Dict>("x", x.jsonize()),
-        std::make_shared<Plotter::Dict>("y", y.jsonize()),
-        std::make_shared<Plotter::Dict>("z", z.jsonize()),
+        std::make_shared<Plotter::Types::Boolean>("enabled", enabled),
+        std::make_shared<Plotter::Types::Dict>("x", x.jsonize()),
+        std::make_shared<Plotter::Types::Dict>("y", y.jsonize()),
+        std::make_shared<Plotter::Types::Dict>("z", z.jsonize()),
     };
   };
 };
