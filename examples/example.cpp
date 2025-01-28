@@ -5,17 +5,16 @@
 #include <cmath>
 #include <iostream>
 #include <memory>
+#include <numbers>
 #include <thread>
 #include <vector>
 
 // Example struct with nested structs
-struct Example
-{
+struct Example {
 
   bool enabled = true;
 
-  struct Coordinate
-  {
+  struct Coordinate {
     int axis;
     double value;
 
@@ -46,15 +45,14 @@ int main()
 
   Example data = {true, {0, 1.123456789123456789}, {1, 2.0}, {2, 3.0}};
 
-  std::cout << Plotter::valuesToJson(data.jsonize(), 0.0) << std::endl;
+  std::cout << Plotter::valuesToJson(data.jsonize(), 0.0) << "\n";
 
   // Simulate sending data periodically
-  for (int i = 0; i < 10000; ++i)
-  {
+  for (int i = 0; i < 10000; ++i) {
     data.enabled = !data.enabled;
     data.x.value = std::sin(i * 0.1);
-    data.y.value = std::sin(i * 0.1 + M_PI_4);
-    data.z.value = std::sin(i * 0.1 + M_PI_2);
+    data.y.value = std::sin(i * 0.1 + std::numbers::pi / 4);
+    data.z.value = std::sin(i * 0.1 + std::numbers::pi / 2);
 
     pub.publishWithTimestamp(data.jsonize(), i * 0.1);
 

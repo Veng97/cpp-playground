@@ -2,8 +2,8 @@
 
 #include "plotter/types.hpp"
 
-#include <arpa/inet.h>
 #include <memory>
+#include <netinet/in.h> // For sockaddr_in
 #include <string>
 #include <vector>
 
@@ -37,12 +37,9 @@ public:
    */
   template <typename T> void publish(const T& data)
   {
-    if constexpr (std::is_same_v<T, std::vector<std::shared_ptr<Plotter::KeyValuePair>>>)
-    {
+    if constexpr (std::is_same_v<T, std::vector<std::shared_ptr<Plotter::KeyValuePair>>>) {
       send(valuesToJson(data));
-    }
-    else
-    {
+    } else {
       send(structToJson(data));
     }
   }
@@ -57,12 +54,9 @@ public:
    */
   template <typename T> void publishWithTimestamp(const T& data, const double& timestamp)
   {
-    if constexpr (std::is_same_v<T, std::vector<std::shared_ptr<Plotter::KeyValuePair>>>)
-    {
+    if constexpr (std::is_same_v<T, std::vector<std::shared_ptr<Plotter::KeyValuePair>>>) {
       send(valuesToJson(data, timestamp));
-    }
-    else
-    {
+    } else {
       send(structToJson(data, timestamp));
     }
   }

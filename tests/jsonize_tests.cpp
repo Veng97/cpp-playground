@@ -3,6 +3,7 @@
 
 #include <gtest/gtest.h>
 #include <memory>
+#include <string>
 #include <vector>
 
 /**
@@ -29,8 +30,7 @@ TEST(JsonizeTests, ValuesToJson)
  */
 TEST(JsonizeTests, JsonizeVectorFromStruct)
 {
-  struct Vec3
-  {
+  struct Vec3 {
     int x;
     int y;
     int z;
@@ -55,8 +55,7 @@ TEST(JsonizeTests, JsonizeVectorFromStruct)
  */
 TEST(JsonizeTests, JsonizeScalarFromStruct)
 {
-  struct Vec3
-  {
+  struct Vec3 {
     int x;
     int y;
     int z;
@@ -81,8 +80,7 @@ TEST(JsonizeTests, JsonizeScalarFromStruct)
  */
 TEST(JsonizeTests, JsonizeWithTimestamp)
 {
-  struct Vec3
-  {
+  struct Vec3 {
     int x;
     int y;
     int z;

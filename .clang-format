@@ -6,7 +6,7 @@ TabWidth: 2
 UseTab: Never
 ColumnLimit: 500
 IncludeBlocks: Preserve
-BreakBeforeBraces: Custom
+BreakBeforeBraces: Linux
 DerivePointerAlignment: false
 PointerAlignment: Left
 ReflowComments: true

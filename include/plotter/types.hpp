@@ -1,10 +1,12 @@
 #pragma once
 
 #include <concepts>
+#include <ios>
 #include <limits>
 #include <memory>
 #include <sstream>
 #include <string>
+#include <utility>
 #include <vector>
 
 namespace Plotter
@@ -68,10 +70,8 @@ inline std::string valuesToJson(const std::vector<std::shared_ptr<Plotter::KeyVa
   std::ostringstream oss;
   oss << "{";
   bool first = true;
-  for (const auto& key_value_pair : key_value_pairs)
-  {
-    if (!first)
-    {
+  for (const auto& key_value_pair : key_value_pairs) {
+    if (!first) {
       oss << ",";
     }
     first = false;
@@ -93,10 +93,8 @@ inline std::string valuesToJson(const std::vector<std::shared_ptr<Plotter::KeyVa
   std::ostringstream oss;
   oss << R"({"timestamp":)" << timestamp << ",";
   bool first = true;
-  for (const auto& key_value_pair : key_value_pairs)
-  {
-    if (!first)
-    {
+  for (const auto& key_value_pair : key_value_pairs) {
+    if (!first) {
       oss << ",";
     }
     first = false;
@@ -118,12 +116,9 @@ template <typename T>
 inline std::string structToJson(const T& obj)
 {
   const auto& members = obj.jsonize();
-  if constexpr (std::is_same_v<std::vector<std::shared_ptr<KeyValuePair>>, decltype(members)>)
-  {
+  if constexpr (std::is_same_v<std::vector<std::shared_ptr<KeyValuePair>>, decltype(members)>) {
     return valuesToJson(obj.jsonize());
-  }
-  else
-  {
+  } else {
     return valuesToJson(std::vector<std::shared_ptr<KeyValuePair>>{obj.jsonize()});
   }
 }
@@ -140,12 +135,9 @@ template <typename T>
 inline std::string structToJson(const T& obj, const double& timestamp)
 {
   const auto& members = obj.jsonize();
-  if constexpr (std::is_same_v<std::vector<std::shared_ptr<KeyValuePair>>, decltype(members)>)
-  {
+  if constexpr (std::is_same_v<std::vector<std::shared_ptr<KeyValuePair>>, decltype(members)>) {
     return valuesToJson(obj.jsonize(), timestamp);
-  }
-  else
-  {
+  } else {
     return valuesToJson(std::vector<std::shared_ptr<KeyValuePair>>{obj.jsonize()}, timestamp);
   }
 }
@@ -232,10 +224,8 @@ public:
     std::ostringstream oss;
     oss << "[";
     bool first = true;
-    for (const auto& value : m_values)
-    {
-      if (!first)
-      {
+    for (const auto& value : m_values) {
+      if (!first) {
         oss << ",";
       }
       first = false;
@@ -306,10 +296,8 @@ public:
     oss.precision(std::numeric_limits<double>::max_digits10);
     oss << "[";
     bool first = true;
-    for (const auto& value : m_values)
-    {
-      if (!first)
-      {
+    for (const auto& value : m_values) {
+      if (!first) {
         oss << ",";
       }
       first = false;
