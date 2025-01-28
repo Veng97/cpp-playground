@@ -1,5 +1,4 @@
-#include "plotter/publisher.hpp"
-#include "plotter/types.hpp"
+#include "plotter/plotter.hpp"
 
 #include <chrono>
 #include <cmath>

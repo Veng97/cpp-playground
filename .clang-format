@@ -4,7 +4,7 @@ BasedOnStyle: Microsoft
 IndentWidth: 2
 TabWidth: 2
 UseTab: Never
-ColumnLimit: 500
+ColumnLimit: 1000
 IncludeBlocks: Preserve
 BreakBeforeBraces: Linux
 DerivePointerAlignment: false
