@@ -12,7 +12,7 @@ set(CMAKE_CXX_FLAGS_DEBUG "-O0 -gdwarf-4 -fno-omit-frame-pointer -fno-inline")
 include_directories(include)
 
 # Build library
-add_library(plotter src/plotter/publisher.cpp)
+add_library(plotter src/plotter/publisher.cpp src/plotter/jsonize.cpp)
 
 # Add examples if BUILD_EXAMPLES is enabled
 option(BUILD_EXAMPLES "Build example programs" ON)

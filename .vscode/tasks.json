@@ -26,7 +26,7 @@
       ]
     },
     {
-      "label": "Build Target (Release)",
+      "label": "Build (Release)",
       "type": "shell",
       "dependsOn": [
         "CMake Configure (Release)"
@@ -35,8 +35,6 @@
       "args": [
         "--build",
         "${workspaceFolder}/build",
-        "--target",
-        "${input:pickTarget}"
       ],
       "group": {
         "kind": "build",
@@ -44,7 +42,7 @@
       }
     },
     {
-      "label": "Build Target (Debug)",
+      "label": "Build (Debug)",
       "type": "shell",
       "dependsOn": [
         "CMake Configure (Debug)"
@@ -53,8 +51,6 @@
       "args": [
         "--build",
         "${workspaceFolder}/build",
-        "--target",
-        "${input:pickTarget}"
       ],
       "group": {
         "kind": "build",
@@ -70,7 +66,7 @@
         "isDefault": true
       },
       "dependsOn": [
-        "Build Target (Release)"
+        "Build (Release)"
       ]
     },
     {
@@ -82,7 +78,7 @@
         "isDefault": true
       },
       "dependsOn": [
-        "Build Target (Debug)"
+        "Build (Debug)"
       ]
     },
     {
@@ -94,7 +90,7 @@
         "isDefault": true
       },
       "dependsOn": [
-        "Build Target (Debug)"
+        "Build (Debug)"
       ]
     },
     {
