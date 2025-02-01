@@ -1,11 +1,10 @@
 #pragma once
 
-#include "plotter/types.hpp"
+#include "plotter/jsonize.hpp"
 
-#include <memory>
 #include <netinet/in.h> // For sockaddr_in
+#include <optional>
 #include <string>
-#include <vector>
 
 namespace Plotter
 {
@@ -33,32 +32,12 @@ public:
    *           - `std::vector<std::shared_ptr<Plotter::KeyValuePair>>` or
    *           - A type that provides a `jsonize` method.
    * @param data The data to publish.
-   * @throw std::runtime_error If the sending process fails.
-   */
-  template <typename T> void publish(const T& data)
-  {
-    if constexpr (std::is_same_v<T, std::vector<std::shared_ptr<Plotter::KeyValuePair>>>) {
-      send(valuesToJson(data));
-    } else {
-      send(structToJson(data));
-    }
-  }
-
-  /**
-   * @brief Publishes data to the server with a timestamp. See `publish()` for more details.
-   *
-   * @tparam T The type of the data to be published.
-   * @param data The data to publish.
    * @param timestamp The timestamp to include in the JSON string.
    * @throw std::runtime_error If the sending process fails.
    */
-  template <typename T> void publishWithTimestamp(const T& data, const double& timestamp)
+  template <typename T> void publish(const T& data, std::optional<double> timestamp = std::nullopt)
   {
-    if constexpr (std::is_same_v<T, std::vector<std::shared_ptr<Plotter::KeyValuePair>>>) {
-      send(valuesToJson(data, timestamp));
-    } else {
-      send(structToJson(data, timestamp));
-    }
+    send(toJson(data, timestamp));
   }
 
   /**

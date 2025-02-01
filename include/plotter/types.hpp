@@ -201,11 +201,11 @@ public:
    */
   std::string getValue() const override
   {
-    return valuesToJson(m_values);
+    return toJson(m_values);
   }
 
 private:
-  std::vector<std::shared_ptr<KeyValuePair>> m_values; ///< Nested key-value pairs.
+  const std::vector<std::shared_ptr<KeyValuePair>> m_values; ///< Nested key-value pairs.
 };
 
 } // namespace Plotter::Types

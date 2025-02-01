@@ -1,3 +1,4 @@
+#include "plotter/jsonize.hpp"
 #include "plotter/plotter.hpp"
 
 #include <chrono>
@@ -44,7 +45,7 @@ int main()
 
   Example data = {true, {0, 1.123456789123456789}, {1, 2.0}, {2, 3.0}};
 
-  std::cout << Plotter::valuesToJson(data.jsonize(), 0.0) << "\n";
+  std::cout << Plotter::toJson(data, 0.0) << "\n";
 
   // Simulate sending data periodically
   for (int i = 0; i < 10000; ++i) {
@@ -53,7 +54,7 @@ int main()
     data.y.value = std::sin(i * 0.1 + std::numbers::pi / 4);
     data.z.value = std::sin(i * 0.1 + std::numbers::pi / 2);
 
-    pub.publishWithTimestamp(data.jsonize(), i * 0.1);
+    pub.publish(data.jsonize(), i * 0.1);
 
     std::this_thread::sleep_for(std::chrono::milliseconds(10));
   }

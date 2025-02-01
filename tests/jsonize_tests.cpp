@@ -1,4 +1,5 @@
 
+#include "plotter/jsonize.hpp"
 #include "plotter/types.hpp"
 
 #include <gtest/gtest.h>
@@ -17,7 +18,7 @@ TEST(JsonizeTests, ValuesToJson)
       std::make_shared<Plotter::Types::Float>("float", 0.123456789),
   };
 
-  std::string json = Plotter::valuesToJson(values);
+  std::string json = Plotter::toJson(values);
   std::string expected_json = R"({"boolean":true,"integer":42,"float":0.123456789)";
 
   // Expect that the JSON string starts with the following substring.
@@ -47,7 +48,7 @@ TEST(JsonizeTests, JsonizeVectorFromStruct)
 
   Vec3 vec3{1, 2, 3};
 
-  EXPECT_EQ(Plotter::structToJson(vec3), R"({"x":1,"y":2,"z":3})");
+  EXPECT_EQ(Plotter::toJson(vec3.jsonize()), R"({"x":1,"y":2,"z":3})");
 }
 
 /**
@@ -72,7 +73,7 @@ TEST(JsonizeTests, JsonizeScalarFromStruct)
 
   Vec3 vec3{1, 2, 3};
 
-  EXPECT_EQ(Plotter::structToJson(vec3), R"({"vec3":{"x":1,"y":2,"z":3}})");
+  EXPECT_EQ(Plotter::toJson(vec3), R"({"vec3":{"x":1,"y":2,"z":3}})");
 }
 
 /**
@@ -97,14 +98,14 @@ TEST(JsonizeTests, JsonizeWithTimestamp)
 
   Vec3 vec3{1, 2, 3};
 
-  double timestamp = 0.1234;
-  EXPECT_EQ(Plotter::structToJson(vec3, timestamp), R"({"timestamp":0.1234,"vec3":{"x":1,"y":2,"z":3}})");
+  double timestamp = 0.123456;
+  EXPECT_EQ(Plotter::toJson(vec3, timestamp), R"({"timestamp":0.123456,"vec3":{"x":1,"y":2,"z":3}})");
 }
 
 /**
  * @brief Tests JSON serialization of a float vector.
  */
-TEST(JsonizeTests, FloatVectorToJson)
+TEST(JsonizeTests, VectorToJson)
 {
-  EXPECT_EQ(Plotter::valuesToJson({std::make_shared<Plotter::Types::Integers>("integers", std::vector<int>{1, 2})}), "{\"integers\":[1,2]}");
+  EXPECT_EQ(Plotter::toJson(std::make_shared<Plotter::Types::Integers>("integers", std::vector<int>{1, 2, 3})), "{\"integers\":[1,2,3]}");
 }
