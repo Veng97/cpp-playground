@@ -101,11 +101,3 @@ TEST(JsonizeTests, JsonizeWithTimestamp)
   double timestamp = 0.123456;
   EXPECT_EQ(Plotter::toJson(vec3, timestamp), R"({"timestamp":0.123456,"vec3":{"x":1,"y":2,"z":3}})");
 }
-
-/**
- * @brief Tests JSON serialization of a float vector.
- */
-// TEST(JsonizeTests, VectorToJson)
-// {
-//   EXPECT_EQ(Plotter::toJson(std::make_shared<Plotter::Types::Integers>("integers", std::vector<int>{1, 2, 3})), "{\"integers\":[1,2,3]}");
-// }

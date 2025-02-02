@@ -2,11 +2,10 @@
 
 #include "plotter/jsonize.hpp"
 
-#include <ios>
-#include <limits>
+#include <charconv>
 #include <memory>
-#include <sstream>
 #include <string>
+#include <system_error>
 #include <utility>
 #include <vector>
 
@@ -31,7 +30,7 @@ public:
    * @brief Gets the value of the key-value pair as a string.
    * @return "true" or "false" based on the boolean value.
    */
-  std::string getValue() const override
+  std::string getValue() override
   {
     return m_value ? "true" : "false";
   }
@@ -59,7 +58,7 @@ public:
    * @brief Gets the value of the key-value pair as a string.
    * @return The integer value as a string.
    */
-  std::string getValue() const override
+  std::string getValue() override
   {
     return std::to_string(m_value);
   }
@@ -87,58 +86,20 @@ public:
    * @brief Gets the value of the key-value pair as a string.
    * @return The double value as a string.
    */
-  std::string getValue() const override
+  std::string getValue() override
   {
-    // std::ostringstream oss;
-    // oss.precision(std::numeric_limits<double>::max_digits10);
-    // oss << std::fixed << m_value;
-    return std::to_string(m_value);
+    // Buffer large enough to hold any double representation
+    char buffer[32];
+    auto [ptr, ec] = std::to_chars(buffer, buffer + sizeof(buffer), m_value, std::chars_format::general);
+    if (ec != std::errc()) {
+      return "NaN";
+    }
+    return std::string(buffer, ptr);
   }
 
 private:
   double m_value; ///< Float value.
 };
-
-// /**
-//  * @brief Represents a key-value pair with multiple float values.
-//  */
-// class Floats : public KeyValuePair
-// {
-// public:
-//   /**
-//    * @brief Constructs a Floats key-value pair.
-//    * @param name The name of the key.
-//    * @param values A vector of float values.
-//    */
-//   Floats(std::string name, std::vector<double> values) : KeyValuePair(std::move(name)), m_values(std::move(values))
-//   {
-//   }
-
-//   /**
-//    * @brief Gets the value of the key-value pair as a string.
-//    * @return A JSON-formatted string of the float values.
-//    */
-//   std::string getValue() const override
-//   {
-//     std::ostringstream oss;
-//     oss.precision(std::numeric_limits<double>::max_digits10);
-//     oss << "[";
-//     bool first = true;
-//     for (const auto& value : m_values) {
-//       if (!first) {
-//         oss << ",";
-//       }
-//       first = false;
-//       oss << std::fixed << value;
-//     }
-
-//     oss << "]";
-//     return oss.str();
-//   }
-
-// private:
-//   std::vector<double> m_values; ///< Float values.
-// };
 
 /**
  * @brief Represents a key-value pair with nested fields.
@@ -147,11 +108,20 @@ class Dict : public KeyValuePair
 {
 public:
   /**
-   * @brief Constructs a Dict key-value pair.
-   * @param name The name of the key.
-   * @param values A vector of nested key-value pairs.
+   * @brief Constructs a Dict with a single key-value pair.
+   * @param name The key name.
+   * @param value A single key-value pair.
    */
-  Dict(std::string name, std::vector<std::shared_ptr<KeyValuePair>> values) : KeyValuePair(std::move(name)), m_values(std::move(values))
+  Dict(std::string name, std::shared_ptr<KeyValuePair> value) : KeyValuePair(std::move(name)), m_value(std::move(value)), m_is_scalar(true)
+  {
+  }
+
+  /**
+   * @brief Constructs a Dict with multiple key-value pairs.
+   * @param name The key name.
+   * @param values A vector of key-value pairs.
+   */
+  Dict(std::string name, std::vector<std::shared_ptr<KeyValuePair>> values) : KeyValuePair(std::move(name)), m_values(std::move(values)), m_is_scalar(false)
   {
   }
 
@@ -159,13 +129,15 @@ public:
    * @brief Gets the value of the key-value pair as a JSON string.
    * @return A JSON-formatted string of the nested fields.
    */
-  std::string getValue() const override
+  std::string getValue() override
   {
-    return toJson(m_values);
+    return m_is_scalar ? toJson(m_value) : toJson(m_values);
   }
 
 private:
-  const std::vector<std::shared_ptr<KeyValuePair>> m_values; ///< Nested key-value pairs.
+  const std::shared_ptr<KeyValuePair> m_value;               ///< Single key-value pair (optional)
+  const std::vector<std::shared_ptr<KeyValuePair>> m_values; ///< Multiple key-value pairs (optional)
+  const bool m_is_scalar;                                    ///< Flag to track which variant is used
 };
 
 } // namespace Plotter::Types

@@ -29,7 +29,7 @@ public:
    * @brief Get the value of the key-value pair.
    * @return The value as a string. Must be a valid JSON value.
    */
-  virtual std::string getValue() const = 0;
+  virtual std::string getValue() = 0;
 
 private:
   const std::string m_key;
