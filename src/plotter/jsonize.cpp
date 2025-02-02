@@ -1,6 +1,5 @@
 #include "plotter/jsonize.hpp"
 
-#include <cstdint>
 #include <memory>
 #include <optional>
 #include <string>
@@ -20,7 +19,7 @@ std::string_view KeyValuePair::getKey() const
   return m_key;
 }
 
-std::string toJson(const std::shared_ptr<KeyValuePair>& data, std::optional<double> timestamp, std::optional<uint64_t> reserve)
+std::string toJson(const std::shared_ptr<KeyValuePair>& data, std::optional<double> timestamp, std::optional<unsigned long> reserve)
 {
   std::string str;
   if (reserve) {
@@ -42,7 +41,7 @@ std::string toJson(const std::shared_ptr<KeyValuePair>& data, std::optional<doub
   return str;
 }
 
-std::string toJson(const std::vector<std::shared_ptr<KeyValuePair>>& data, std::optional<double> timestamp, std::optional<uint64_t> reserve)
+std::string toJson(const std::vector<std::shared_ptr<KeyValuePair>>& data, std::optional<double> timestamp, std::optional<unsigned long> reserve)
 {
   std::string str;
   if (reserve) {

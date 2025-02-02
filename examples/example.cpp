@@ -20,7 +20,10 @@ struct Example {
 
     std::vector<std::shared_ptr<Plotter::KeyValuePair>> jsonize() const
     {
-      return {std::make_shared<Plotter::Types::Integer>("axis", axis), std::make_shared<Plotter::Types::Float>("value", value)};
+      return {
+          std::make_shared<Plotter::Types::Integer>("axis", axis),
+          std::make_shared<Plotter::Types::Float>("value", value),
+      };
     };
   };
 
@@ -54,7 +57,7 @@ int main()
     data.y.value = std::sin(i * 0.1 + std::numbers::pi / 4);
     data.z.value = std::sin(i * 0.1 + std::numbers::pi / 2);
 
-    pub.publish(data.jsonize(), i * 0.1);
+    pub.publish(data, i * 0.1);
 
     std::this_thread::sleep_for(std::chrono::milliseconds(10));
   }

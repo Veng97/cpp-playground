@@ -2,6 +2,7 @@
 
 #include "plotter/jsonize.hpp"
 
+#include <algorithm>
 #include <netinet/in.h> // For sockaddr_in
 #include <optional>
 #include <string>
@@ -37,7 +38,9 @@ public:
    */
   template <typename T> void publish(const T& data, std::optional<double> timestamp = std::nullopt)
   {
-    send(toJson(data, timestamp));
+    std::string data_as_json = toJson(data, timestamp, m_reserve);
+    m_reserve = std::max(data_as_json.size(), m_reserve);
+    send(data_as_json);
   }
 
   /**
@@ -52,6 +55,7 @@ private:
   int m_server_port;                ///< The server's port number.
   int m_sockfd;                     ///< The socket file descriptor.
   struct sockaddr_in m_server_addr; ///< The server's address structure.
+  unsigned long m_reserve{64};      ///< The reserved size for the JSON string.
 };
 
 } // namespace Plotter

@@ -1,7 +1,6 @@
 #pragma once
 
 #include <concepts>
-#include <cstdint>
 #include <memory>
 #include <optional>
 #include <string>
@@ -20,9 +19,17 @@ public:
   explicit KeyValuePair(std::string name);
   virtual ~KeyValuePair() = default;
 
-  virtual std::string getValue() const = 0;
-
+  /**
+   * @brief Get the key of the key-value pair.
+   * @return The key as a string. Must be a valid JSON key.
+   */
   std::string_view getKey() const;
+
+  /**
+   * @brief Get the value of the key-value pair.
+   * @return The value as a string. Must be a valid JSON value.
+   */
+  virtual std::string getValue() const = 0;
 
 private:
   const std::string m_key;
@@ -42,7 +49,7 @@ concept HasJsonize = requires(T obj) {
  * @param timestamp Optional timestamp to include in the JSON string.
  * @return A JSON-formatted string representation.
  */
-std::string toJson(const std::shared_ptr<KeyValuePair>& data, std::optional<double> timestamp = std::nullopt, std::optional<uint64_t> reserve = std::nullopt);
+std::string toJson(const std::shared_ptr<KeyValuePair>& data, std::optional<double> timestamp = std::nullopt, std::optional<unsigned long> reserve = std::nullopt);
 
 /**
  * @brief Converts key-value pairs to a JSON-formatted string.
@@ -50,7 +57,7 @@ std::string toJson(const std::shared_ptr<KeyValuePair>& data, std::optional<doub
  * @param timestamp Optional timestamp to include in the JSON string.
  * @return A JSON-formatted string representation.
  */
-std::string toJson(const std::vector<std::shared_ptr<KeyValuePair>>& data, std::optional<double> timestamp = std::nullopt, std::optional<uint64_t> reserve = std::nullopt);
+std::string toJson(const std::vector<std::shared_ptr<KeyValuePair>>& data, std::optional<double> timestamp = std::nullopt, std::optional<unsigned long> reserve = std::nullopt);
 
 /**
  * @brief Converts a JSON-izable object to a JSON-formatted string.
@@ -58,7 +65,7 @@ std::string toJson(const std::vector<std::shared_ptr<KeyValuePair>>& data, std::
  * @param timestamp Optional timestamp to include in the JSON string.
  * @return A JSON-formatted string representation.
  */
-template <HasJsonize T> std::string toJson(const T& data, std::optional<double> timestamp = std::nullopt, std::optional<uint64_t> reserve = std::nullopt)
+template <HasJsonize T> std::string toJson(const T& data, std::optional<double> timestamp = std::nullopt, std::optional<unsigned long> reserve = std::nullopt)
 {
   return toJson(data.jsonize(), timestamp, reserve);
 }

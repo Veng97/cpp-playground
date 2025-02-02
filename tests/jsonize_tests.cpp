@@ -105,7 +105,7 @@ TEST(JsonizeTests, JsonizeWithTimestamp)
 /**
  * @brief Tests JSON serialization of a float vector.
  */
-TEST(JsonizeTests, VectorToJson)
-{
-  EXPECT_EQ(Plotter::toJson(std::make_shared<Plotter::Types::Integers>("integers", std::vector<int>{1, 2, 3})), "{\"integers\":[1,2,3]}");
-}
+// TEST(JsonizeTests, VectorToJson)
+// {
+//   EXPECT_EQ(Plotter::toJson(std::make_shared<Plotter::Types::Integers>("integers", std::vector<int>{1, 2, 3})), "{\"integers\":[1,2,3]}");
+// }

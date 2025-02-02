@@ -69,46 +69,6 @@ private:
 };
 
 /**
- * @brief Represents a key-value pair with multiple integer values.
- */
-class Integers : public KeyValuePair
-{
-public:
-  /**
-   * @brief Constructs an Integers key-value pair.
-   * @param name The name of the key.
-   * @param values A vector of integer values.
-   */
-  Integers(std::string name, std::vector<int> values) : KeyValuePair(std::move(name)), m_values(std::move(values))
-  {
-  }
-
-  /**
-   * @brief Gets the value of the key-value pair as a JSON string.
-   * @return A JSON-formatted string of the integer values.
-   */
-  std::string getValue() const override
-  {
-    std::ostringstream oss;
-    oss << "[";
-    bool first = true;
-    for (const auto& value : m_values) {
-      if (!first) {
-        oss << ",";
-      }
-      first = false;
-      oss << value;
-    }
-
-    oss << "]";
-    return oss.str();
-  }
-
-private:
-  std::vector<int> m_values; ///< Integer values.
-};
-
-/**
  * @brief Represents a key-value pair with a float value.
  */
 class Float : public KeyValuePair
@@ -129,56 +89,56 @@ public:
    */
   std::string getValue() const override
   {
-    std::ostringstream oss;
-    oss.precision(std::numeric_limits<double>::max_digits10);
-    oss << std::fixed << m_value;
-    return oss.str();
+    // std::ostringstream oss;
+    // oss.precision(std::numeric_limits<double>::max_digits10);
+    // oss << std::fixed << m_value;
+    return std::to_string(m_value);
   }
 
 private:
   double m_value; ///< Float value.
 };
 
-/**
- * @brief Represents a key-value pair with multiple float values.
- */
-class Floats : public KeyValuePair
-{
-public:
-  /**
-   * @brief Constructs a Floats key-value pair.
-   * @param name The name of the key.
-   * @param values A vector of float values.
-   */
-  Floats(std::string name, std::vector<double> values) : KeyValuePair(std::move(name)), m_values(std::move(values))
-  {
-  }
+// /**
+//  * @brief Represents a key-value pair with multiple float values.
+//  */
+// class Floats : public KeyValuePair
+// {
+// public:
+//   /**
+//    * @brief Constructs a Floats key-value pair.
+//    * @param name The name of the key.
+//    * @param values A vector of float values.
+//    */
+//   Floats(std::string name, std::vector<double> values) : KeyValuePair(std::move(name)), m_values(std::move(values))
+//   {
+//   }
 
-  /**
-   * @brief Gets the value of the key-value pair as a string.
-   * @return A JSON-formatted string of the float values.
-   */
-  std::string getValue() const override
-  {
-    std::ostringstream oss;
-    oss.precision(std::numeric_limits<double>::max_digits10);
-    oss << "[";
-    bool first = true;
-    for (const auto& value : m_values) {
-      if (!first) {
-        oss << ",";
-      }
-      first = false;
-      oss << std::fixed << value;
-    }
+//   /**
+//    * @brief Gets the value of the key-value pair as a string.
+//    * @return A JSON-formatted string of the float values.
+//    */
+//   std::string getValue() const override
+//   {
+//     std::ostringstream oss;
+//     oss.precision(std::numeric_limits<double>::max_digits10);
+//     oss << "[";
+//     bool first = true;
+//     for (const auto& value : m_values) {
+//       if (!first) {
+//         oss << ",";
+//       }
+//       first = false;
+//       oss << std::fixed << value;
+//     }
 
-    oss << "]";
-    return oss.str();
-  }
+//     oss << "]";
+//     return oss.str();
+//   }
 
-private:
-  std::vector<double> m_values; ///< Float values.
-};
+// private:
+//   std::vector<double> m_values; ///< Float values.
+// };
 
 /**
  * @brief Represents a key-value pair with nested fields.
