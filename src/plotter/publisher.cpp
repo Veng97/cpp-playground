@@ -27,6 +27,9 @@ Publisher::Publisher(std::string ip, int port) : m_server_ip(std::move(ip)), m_s
   if (inet_pton(AF_INET, m_server_ip.c_str(), &m_server_addr.sin_addr) <= 0) {
     throw std::runtime_error("[Plotter] Invalid IP address");
   }
+
+  // Store the server's address in the format `ip:port`
+  m_address = m_server_ip + ":" + std::to_string(m_server_port);
 }
 
 Publisher::~Publisher()

@@ -27,6 +27,15 @@ public:
   ~Publisher();
 
   /**
+   * @brief Returns the server's address in the format `ip:port`.
+   * @return The server's address.
+   */
+  std::string address() const
+  {
+    return m_address;
+  }
+
+  /**
    * @brief Publishes data to the server, automatically handling the conversion to JSON format.
    *
    * @tparam T The type of the data to be published. It must either be:
@@ -43,6 +52,7 @@ public:
     send(data_as_json);
   }
 
+private:
   /**
    * @brief Sends the specified data to the server.
    * @param data The data to send.
@@ -50,7 +60,7 @@ public:
    */
   void send(const std::string& data);
 
-private:
+  std::string m_address;            ///< The server's address in the format `ip:port`.
   std::string m_server_ip;          ///< The server's IP address.
   int m_server_port;                ///< The server's port number.
   int m_sockfd;                     ///< The socket file descriptor.

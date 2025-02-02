@@ -45,20 +45,23 @@ struct Example {
 int main()
 {
   Plotter::Publisher pub("0.0.0.0", 9870);
+  std::cout << "Publisher started on " << pub.address() << "\n";
 
   Example data = {true, {0, 1.123456789123456789}, {1, 2.0}, {2, 3.0}};
-
   std::cout << Plotter::toJson(data, 0.0) << "\n";
 
   // Simulate sending data periodically
-  for (int i = 0; i < 10000; ++i) {
+  double timestep = 0.001;
+  for (int i = 0; i < 100000; ++i) {
+
     data.enabled = !data.enabled;
+
     data.x.value = std::sin(i * 0.1);
     data.y.value = std::sin(i * 0.1 + std::numbers::pi / 4);
     data.z.value = std::sin(i * 0.1 + std::numbers::pi / 2);
 
-    pub.publish(data, i * 0.1);
+    pub.publish(data, i * timestep);
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    std::this_thread::sleep_for(std::chrono::duration<double>(timestep));
   }
 }
