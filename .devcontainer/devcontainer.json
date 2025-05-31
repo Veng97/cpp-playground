@@ -8,8 +8,14 @@
     "--network=host"
   ],
   "mounts": [
-    "source=${localWorkspaceFolder},target=/Workspace,type=bind,consistency=cached"
+    "source=${localWorkspaceFolder},target=/Workspace,type=bind,consistency=cached",
+    "source=${localEnv:HOME}/.ssh,target=/home/ubuntu/.ssh,type=bind,readonly",
+    "source=/tmp/.X11-unix,target=/tmp/.X11-unix,type=bind"
   ],
+  "containerEnv": {
+    "DISPLAY": "${env:DISPLAY}"
+  },
+  "initializeCommand": "xhost +local:root",
   "workspaceFolder": "/Workspace",
   "customizations": {
     "vscode": {
